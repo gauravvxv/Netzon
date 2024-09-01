@@ -1,18 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Movies from "./pages/Movies"
+import Movies from './pages/Movies';
+import Signup from './pages/Signup';
 import { ThemeProvider } from './theme/themeContext';
+import Login from './pages/Login';
+import { AuthProvider } from './context';
 
 function App() {
-
-  
   return (
-    <div className="App">
-      <ThemeProvider>
-    <Navbar/>
-      </ThemeProvider>
-    </div>
+    <AuthProvider>
+    <ThemeProvider>
+        <Routes>
+            <Route path="/" element={<Movies />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+        </Routes>
+    </ThemeProvider>
+</AuthProvider>
+   
   );
 }
 

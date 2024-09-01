@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AllRouters = () => {
+const Footer = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const AllRouters = () => {
   )
 }
 
-export default AllRouters
+export default Footer
