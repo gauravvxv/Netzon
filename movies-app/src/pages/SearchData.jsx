@@ -1,11 +1,24 @@
 import React from 'react';
 import { useTheme } from '../theme/themeContext';
+import { useState } from 'react';
 
-const SearchData = ({ searchData, searchLoading, searchError }) => {
+const SearchData = ({ searchData, searchLoading, searchError , hasSearched }) => {
+
   const { darkMode } = useTheme();
 
   if (searchLoading) return <>Loading...</>;
   if (searchError) return <>Error loading search results</>;
+
+  if (hasSearched && (!searchData || searchData.length === 0)) {
+    return (
+      <div className="flex justify-center items-center h-32">
+        <p className={`text-lg font-semibold ${darkMode ? 'text-black' : 'text-white'}`}>
+          No Result Found!
+        </p>
+      </div>
+    );
+  }
+
 
   return (
     <div className="grid grid-cols-2 gap-6 pt-8 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

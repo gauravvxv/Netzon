@@ -5,9 +5,23 @@ import { TbBuildingCommunity } from "react-icons/tb";
 import { FaRegCompass, FaRegDotCircle } from "react-icons/fa";
 import { TfiTimer } from "react-icons/tfi";
 import { LiaUserFriendsSolid } from "react-icons/lia";
+import { doSignOut } from '../firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const { darkMode, toggleDarkMode } = useTheme();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await doSignOut();
+      navigate("/login")
+      console.log("logout");
+
+    } catch (error) {
+      console.log("Logout Error", error)
+    }
+  }
 
   const menuLinks = [
     { icon: <CiHome size={24} />, name: "Home" },
@@ -24,7 +38,7 @@ const Sidebar = () => {
 
   const generalLinks = [
     { icon: <CiSettings size={24} />, name: "Settings" },
-    { icon: <CiLogout size={24} />, name: "Logout" },
+    { icon: <CiLogout size={24}  />, name: "Logout" , onClick: {handleLogout} },
   ];
 
   return (
@@ -54,7 +68,7 @@ const Sidebar = () => {
       <p className='text-gray-500 px-2 py-4 font-bold'>GENERAL</p>
       <ul className='flex flex-col border-b-1 border-gray-700'>
         {generalLinks.map(({ icon, name }) => (
-          <li key={name} className='py-4 hover:bg-zinc-600 rounded-xl'>
+          <li key={name} className='py-4 hover:bg-zinc-600 rounded-xl'> 
             <a href="#" className={`flex items-center gap-2 ${darkMode ? 'text-red-600' : 'text-red-600'}`}>{icon}
               <span className={`text-sm tracking-wider ${darkMode ? 'text-black' : 'text-white'}`}>{name}</span>
             </a>

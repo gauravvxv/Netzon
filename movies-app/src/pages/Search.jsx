@@ -13,6 +13,7 @@ const Search = () => {
         e.preventDefault();
         if (query.trim()) {
             dispatch(fetchSearchData(query));
+      
         }
     };
 
@@ -25,7 +26,7 @@ const Search = () => {
                 <input
                     type="text"
                     placeholder="Search..."
-                    className={`w-full h-10 text-center rounded-l-xl focus:outline-none focus:ring-0 ${darkMode ? 'bg-white  text-white' : 'bg-white text-black'}`}
+                    className={`w-full h-10 text-center rounded-l-xl focus:outline-none focus:ring-0 ${darkMode ? 'bg-white  text-black' : 'bg-white text-black'}`}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />

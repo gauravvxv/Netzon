@@ -81,20 +81,27 @@ const Navbar = ({ toggleSidebar }) => {
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
             >
-                <AlertDialogOverlay>
+                <AlertDialogOverlay
+                    backdropFilter="blur(10px)"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                >
                     <AlertDialogContent
                         bg={darkMode ? 'black' : 'white'}
-                        color={darkMode ? 'white' : 'gray.800'}
+                        color={darkMode ? 'white' : 'gray'}
                         borderRadius="lg"
                         boxShadow="xl"
-                        padding={6}
+                        padding={22}
                         maxWidth="sm"
                     >
                         <AlertDialogHeader
-                            fontSize="lg"
+                            fontSize="xl"
                             fontWeight="bold"
                             borderBottomWidth="1px"
-                            paddingBottom={3}
+                            display="flex"
+                            justifyContent="center"
+                            padding={12}
                         >
                             Logout Confirmation
                         </AlertDialogHeader>
@@ -102,37 +109,45 @@ const Navbar = ({ toggleSidebar }) => {
                         <AlertDialogBody
                             fontSize="md"
                             mb={4}
+                            display="flex"
+                            justifyContent="center"
+                            padding={12}
                         >
                             Are you sure you want to logout? You will be redirected to the login page.
                         </AlertDialogBody>
 
                         <AlertDialogFooter
                             display="flex"
-                            justifyContent="flex-end"
+                            justifyContent="center"
                             gap={4}
                         >
                             <Button
+                                bg="blue"
                                 ref={cancelRef}
+                                borderRadius={10}
+                                color="white"
                                 onClick={onClose}
-                                variant="outline"
-                                borderColor={darkMode ? 'gray.600' : 'gray.300'}
-                                color={darkMode ? 'white' : 'gray.800'}
-                                _hover={{ borderColor: darkMode ? 'gray.500' : 'gray.400' }}
+                                padding={12}
                             >
                                 Cancel
                             </Button>
+
                             <Button
-                                colorScheme="red"
+                                bg="red"
+                               color="white"
+                                size="md"
+                                borderRadius={10}
                                 onClick={handleLogout}
-                                _hover={{ bg: 'red.600' }}
-                                _active={{ bg: 'red.700' }}
+                                padding={12}
                             >
+
                                 Logout
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
+
         </div>
     )
 }

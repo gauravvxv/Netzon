@@ -48,6 +48,7 @@ const Movies = () => {
   const searchData = useSelector((state) => state.movies.searchData);
   const searchLoading = useSelector((state) => state.movies.searchLoading);
   const searchError = useSelector((state) => state.movies.searchError);
+  const hasSearched = useSelector((state)=> state.movies.hasSearched);
 
   const currentPage = useSelector((state) => state.movies.currentPage);
 
@@ -168,7 +169,7 @@ const Movies = () => {
           )}
 
           <div>
-            <SearchData searchData={searchData} searchLoading={searchLoading} searchError={searchError} />
+            <SearchData searchData={searchData} searchLoading={searchLoading} searchError={searchError} hasSearched={hasSearched}  />
           </div>
 
           <p className={`text-xl font-bold pl-16 pb-6 ${darkMode ? 'text-black' : 'text-gray-500'}`}>Best Movies</p>

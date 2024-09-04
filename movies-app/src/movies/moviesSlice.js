@@ -98,13 +98,19 @@ const initialState = {
     error3: null,
     error4: null,
     searchError: null,
+    hasSearched: false,
     currentPage: 1
 }
 
 const moviesSlice = createSlice({
     name: "movies",
     initialState,
-    reducers: {},
+    reducers: {
+        resetSearch: (state) => {
+            state.hasSearched = false;
+            state.searchData = [];
+          },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchData.pending, (state) => {
             state.loading1 = true;
@@ -175,19 +181,24 @@ const moviesSlice = createSlice({
 
         builder.addCase(fetchSearchData.pending , (state)=>{
             state.searchLoading = true;
-            state.searchError = null
+            state.searchError = null;
+            state.hasSearched = true;
         })
 
         builder.addCase(fetchSearchData.fulfilled , (state,action)=>{
             state.searchLoading = false;
-            state.searchData = action.payload
+            state.searchData = action.payload;
+
         })
 
         builder.addCase(fetchSearchData.rejected , (state,action)=>{
             state.searchLoading = false;
-            state.searchError = action.error.message
+            state.searchError = action.error.message;
+
         })
     }
 })
+
+export const {resetSearch} = moviesSlice.actions
 
 export default moviesSlice.reducer
