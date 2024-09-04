@@ -19,7 +19,7 @@ const Search = () => {
     return (
         <div className="flex-1 flex justify-center">
             <form 
-                className="flex items-center w-full max-w-lg h-11 bg-white rounded-xl border-2 border-gray-300"
+                className="flex items-center w-96 max-w-lg h-11 bg-white rounded-xl border-2 border-gray-300"
                 onSubmit={handlesearch}
             >
                 <input

@@ -4,6 +4,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { Link, Navigate } from 'react-router-dom';
 import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../firebase/auth';
 import { useAuth } from '../context/index';
+import { useToast } from '@chakra-ui/react';
 
 const Login = () => {
   const { userLoggedIn } = useAuth();
@@ -34,6 +35,7 @@ const Login = () => {
       setErrorMessage('');
       try {
         await doSignInWithGoogle();
+        
       } catch (error) {
         setErrorMessage(error.message);
         setIsSigningIn(false);
@@ -44,17 +46,17 @@ const Login = () => {
   if (userLoggedIn) {
     return <Navigate to="/" replace={true} />;
   }
-
+  
   return (
     <div className="relative h-screen w-screen flex items-center justify-center">
-  
+
       <img
         src={netFlix}
         alt="Netflix Background"
         className="h-full w-full object-cover absolute inset-0 -z-10"
       />
 
-    
+
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg max-w-md w-full sm:max-w-sm md:max-w-md lg:max-w-lg">
           <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Welcome Back</h2>
@@ -95,9 +97,8 @@ const Login = () => {
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className={`${
-                  isSigningIn ? 'bg-red-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'
-                } text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full`}
+                className={`${isSigningIn ? 'bg-red-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'
+                  } text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full`}
                 disabled={isSigningIn}
               >
                 {isSigningIn ? 'Signing In...' : 'Sign In'}
@@ -121,9 +122,8 @@ const Login = () => {
           <button
             type="button"
             onClick={onGoogleSignin}
-            className={`${
-              isSigningIn ? 'bg-gray-200 cursor-not-allowed' : 'bg-white hover:bg-gray-100'
-            } flex items-center justify-center w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-400`}
+            className={`${isSigningIn ? 'bg-gray-200 cursor-not-allowed' : 'bg-white hover:bg-gray-100'
+              } flex items-center justify-center w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-400`}
             disabled={isSigningIn}
           >
             <FcGoogle className="mr-2" size={24} />

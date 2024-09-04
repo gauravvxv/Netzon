@@ -8,24 +8,26 @@ import { MdLogin } from 'react-icons/md';
 import { useTheme } from '../theme/themeContext';
 import { quantum } from 'ldrs';
 import Search from './Search';
-import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 import { GiHamburgerMenu } from "react-icons/gi";
 import SearchData from './SearchData';
 import { Link, useNavigate } from "react-router-dom";
 import { doSignOut } from '../firebase/auth';
 import { HiOutlineLogin } from "react-icons/hi";
 import { useAuth } from '../context';
+import Navbar from '../components/Navbar';
 quantum.register();
 
 const Movies = () => {
   const [images, setImages] = useState([]);
   const [images2, setImages2] = useState([]);
   const [images3, setImages3] = useState([]);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [load, setLoad] = useState(true);
-  const [showNavbar, setShowNavbar] = useState(false);
   const { darkMode } = useTheme();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+
   const { currentUser, userLoggedIn } = useAuth();
 
   const loading1 = useSelector((state) => state.movies.loading1);
@@ -48,6 +50,8 @@ const Movies = () => {
   const searchError = useSelector((state) => state.movies.searchError);
 
   const currentPage = useSelector((state) => state.movies.currentPage);
+
+ 
 
   useEffect(() => {
     const time = setTimeout(() => {
@@ -86,9 +90,6 @@ const Movies = () => {
     );
   }
 
-  const toggleNavbar = () => {
-    setShowNavbar(!showNavbar)
-  }
 
   if (!userLoggedIn) {
     return (
@@ -126,32 +127,26 @@ const Movies = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await doSignOut();
-      navigate("/login")
-      console.log("logout");
-
-    } catch (error) {
-      console.log("Logout Error", error)
-    }
+  const toggleSidebar = () => {
+    setIsSidebarVisible(prevState => !prevState);
   }
+
 
   const MovieSection = ({ title, data }) => (
     <>
-      <p className={`text-xl font-bold pl-16 pt-8 ${darkMode ? 'text-black' : 'text-gray-500'}`}>{title}</p>
-      <div className={`grid grid-cols-2  gap-4 pb-20 ${darkMode ? 'bg-white' : 'bg-black'} lg:grid-cols-4`}>
+      <p className={`text-xl font-bold pl-16 pb-6 pt-8 ${darkMode ? 'text-black' : 'text-gray-500'}`}>{title}</p>
+      <div className={`grid grid-cols-2  gap-10 pb-10 p-2 ${darkMode ? 'bg-white' : 'bg-black'} lg:grid-cols-4`}>
         {data?.map((e) => (
           <div key={e.id} className="text-center">
             <img
               src={`https://image.tmdb.org/t/p/w500${e.poster_path}`}
               alt="posters"
-              className="w-96 h-3/4 object-cover rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+              className="w-full h-60 sm:h-80 md:h-64 lg:h-80  rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
             />
-            <h3 className={`pt-4 font-semibold ${darkMode ? 'text-black' : 'text-white'}`}>
+            <h3 className={`pt-4 font-semibold text-sm sm:text-base lg:text-lg  ${darkMode ? 'text-black' : 'text-white'}`}>
               Title: {e.title}
             </h3>
-            <p className={`font-semibold ${darkMode ? 'text-black' : 'text-white'}`}>
+            <p className={`font-semibold text-xs sm:text-sm lg:text-base ${darkMode ? 'text-black' : 'text-white'}`}>
               Release Date: {e.release_date}
             </p>
           </div>
@@ -162,30 +157,12 @@ const Movies = () => {
 
   return (
     <>
+      <Navbar toggleSidebar={toggleSidebar} />
       <div className="flex">
 
-        <div className="w-[20%]">
-          <Navbar />
-        </div>
+        {isSidebarVisible && <Sidebar />}
 
-
-        <div className={`${darkMode ? 'bg-[#ffffff]' : 'bg-[#000000]'} w-[80%]`}>
-          <div className={`flex justify-center p-8 items-center ${darkMode ? 'bg-[#ffffff]' : 'bg-[#000000]'}`}>
-
-            <Search />
-            <p className={` ${darkMode ? 'text-black' : 'text-red-600'} font-bold pr-12 text-xl md: text-sm`}>
-              {currentUser.displayName || 'User'}
-            </p>
-            <div className="flex items-center space-x-12">
-              <a href="#">
-                <IoIosNotifications color={darkMode ? 'black' : 'red'} size={40} />
-              </a>
-
-              <MdLogin color={darkMode ? 'black' : 'red'} className='cursor-pointer' size={40} onClick={handleLogout} />
-
-            </div>
-          </div>
-
+        <div className={`w-full ${darkMode ? 'bg-white' : 'bg-black'} p-4 md:p-8`}>
           {searchData.length > 0 && (
             <p className={`text-xl font-bold pl-16 ${darkMode ? 'text-black' : 'text-gray-500'}`}> Search Results</p>
           )}
@@ -194,9 +171,10 @@ const Movies = () => {
             <SearchData searchData={searchData} searchLoading={searchLoading} searchError={searchError} />
           </div>
 
-          <p className={`text-xl font-bold pl-16 ${darkMode ? 'text-black' : 'text-gray-500'}`}>Best Movies</p>
+          <p className={`text-xl font-bold pl-16 pb-6 ${darkMode ? 'text-black' : 'text-gray-500'}`}>Best Movies</p>
 
-          <div className="flex items-center justify-center h-auto pt-6">
+
+          <div className='flex flex-row gap-4 px-4 lg:px-8 '>
             <ImageSlider images={images} />
             <ImageSlider images={images2} />
             <ImageSlider images={images3} />
@@ -205,12 +183,12 @@ const Movies = () => {
           <MovieSection title="Upcoming Movies" data={data} />
 
 
-          <div className="flex justify-center items-center py-8" style={{ marginTop: '-50px' }}>
+          <div className="flex justify-center items-center py-8 mt-[-50px]">
             {currentPage > 1 && (
               <button
                 onClick={loadPrev}
                 disabled={loading1}
-                className={`w-40 h-12 mx-2 rounded-lg ${darkMode ? 'bg-gray-400 text-black' : 'bg-red-600 text-white'} hover:bg-gray-300 cursor-pointer`}
+                className={`w-28 h-10 sm:w-36 sm:h-12 lg:w-40 lg:h-12 mx-2 rounded-lg ${darkMode ? 'bg-gray-400 text-black' : 'bg-red-600 text-white'} hover:bg-gray-300 cursor-pointer text-sm sm:text-base lg:text-lg`}
               >
                 {loading1 ? 'Loading...' : 'Previous'}
               </button>
@@ -218,7 +196,7 @@ const Movies = () => {
             <button
               onClick={loadNext}
               disabled={loading1}
-              className={`w-40 h-12 mx-2 rounded-lg ${darkMode ? 'bg-gray-400 text-black' : 'bg-red-600 text-white'} hover:bg-gray-300 cursor-pointer`}
+              className={`w-28 h-10 sm:w-36 sm:h-12 lg:w-40 lg:h-12 mx-2 rounded-lg ${darkMode ? 'bg-gray-400 text-black' : 'bg-red-600 text-white'} hover:bg-gray-300 cursor-pointer text-sm sm:text-base lg:text-lg`}
             >
               {loading1 ? 'Loading...' : 'Next'}
             </button>

@@ -1,90 +1,140 @@
-import React from 'react';
-import { useTheme } from '../theme/themeContext';
+import React from 'react'
+import { useEffect, useState } from 'react';
 import { BiSolidCameraMovie } from "react-icons/bi";
-import { CiHome, CiUser, CiSettings, CiLogout } from "react-icons/ci";
-import { TbBuildingCommunity } from "react-icons/tb";
-import { FaRegCompass, FaRegDotCircle } from "react-icons/fa";
-import { TfiTimer } from "react-icons/tfi";
-import { LiaUserFriendsSolid } from "react-icons/lia";
+import { IoIosNotifications } from "react-icons/io";
+import { MdLogin } from 'react-icons/md';
+import { useTheme } from '../theme/themeContext';
+import { GiHamburgerMenu } from "react-icons/gi";
+import { Link, useNavigate } from "react-router-dom";
+import { doSignOut } from '../firebase/auth';
+import { HiOutlineLogin } from "react-icons/hi";
+import { useAuth } from '../context';
+import Search from '../pages/Search';
+import {
+    useDisclosure,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    Button
+} from '@chakra-ui/react';
 
-const Navbar = () => {
-  const { darkMode, toggleDarkMode } = useTheme();
+const Navbar = ({ toggleSidebar }) => {
+    const { darkMode } = useTheme();
+    const { currentUser, userLoggedIn } = useAuth();
+    const navigate = useNavigate();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = React.useRef();
 
-  const menuLinks = [
-    { icon: <CiHome size={24} />, name: "Home" },
-    { icon: <TbBuildingCommunity size={24} />, name: "Community" },
-    { icon: <FaRegCompass size={24} />, name: "Discovery" },
-    { icon: <TfiTimer size={24} />, name: "Coming soon" },
-  ];
+    const handleLogout = async () => {
+        try {
+            await doSignOut();
+            navigate("/login")
+            console.log("logout");
 
-  const socialLinks = [
-    { icon: <CiUser size={24} />, name: "Profile" },
-    { icon: <LiaUserFriendsSolid size={24} />, name: "Friends" },
-    { icon: <FaRegDotCircle size={24} />, name: "Social" },
-  ];
+        } catch (error) {
+            console.log("Logout Error", error)
+        }
+    }
+    return (
+        <div className={`w-full ${darkMode ? 'bg-white' : 'bg-black'} shadow-md`}>
+            <div className="container mx-auto flex flex-col md:flex-row items-center justify-between p-4 space-y-4 md:space-y-0">
 
-  const generalLinks = [
-    { icon: <CiSettings size={24} />, name: "Settings" },
-    { icon: <CiLogout size={24} />, name: "Logout" },
-  ];
+                <a href="/" className="flex items-center gap-1 border-b-2 px-4 md:px-0 md:border-0">
+                    <BiSolidCameraMovie size={28} className={darkMode ? 'text-black' : 'text-white'} />
+                    <span className={`text-lg tracking-wider font-semibold ${darkMode ? 'text-black' : 'text-white'}`}>
+                        NETON<span className="text-red-700">.</span>
+                    </span>
+                </a>
 
-  return (
-    <div className={`fixed top-0 left-0 w-1/5  p-4 h-screen ${darkMode ? 'bg-white' : 'bg-black'} overflow-y-auto scrollbar scrollbar-thumb-slate-800`}>
-      <div className='pb-4 py-6'>
-        <a href="#" className={`flex items-center gap-1 px-4 border-b-2 ${darkMode ? 'border-gray-700' : 'border-gray-300'}`}>
-          <BiSolidCameraMovie size={28} className={darkMode ? 'text-black' : 'text-white'} />
-          <span className={`text-sm tracking-wider font-semibold ${darkMode ? 'text-black' : 'text-white'}`}>NETON <span className='text-red-700'>.</span></span>
-        </a>
-      </div>
+                <div className='cursor-pointer' onClick={toggleSidebar}>
+                    <GiHamburgerMenu color={darkMode ? 'black' : 'red'} size={30} />
+                </div>
 
-      <p className='text-gray-500 px-2 py-4 font-bold'>MENU</p>
-      <ul className='flex flex-col border-b-1 border-gray-700'>
-        {menuLinks.map(({ icon, name }) => (
-          <li key={name} className='py-4 hover:bg-zinc-600 rounded-xl'>
-            <a href="#" className={`flex items-center gap-2 ${darkMode ? 'text-red-600' : 'text-red-600'}`}>{icon}
-              <span className={`text-sm tracking-wider ${darkMode ? 'text-black' : 'text-white'}`}>{name}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
 
-      <p className='text-gray-500 px-2 py-4 font-bold'>SOCIAL</p>
-      <ul className='flex flex-col border-b-1 border-gray-700'>
-        {socialLinks.map(({ icon, name }) => (
-          <li key={name} className='py-4 hover:bg-zinc-600 rounded-xl'>
-            <a href="#" className={`flex items-center gap-2 ${darkMode ? 'text-red-600' : 'text-red-600'}`}>{icon}
-              <span className={`text-sm tracking-wider ${darkMode ? 'text-black' : 'text-white'}`}>{name}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+                <div className="w-full md:w-auto">
+                    <Search />
+                </div>
 
-      <p className='text-gray-500 px-2 py-4 font-bold'>GENERAL</p>
-      <ul className='flex flex-col border-b-1 border-gray-700'>
-        {generalLinks.map(({ icon, name }) => (
-          <li key={name} className='py-4 hover:bg-zinc-600 rounded-xl'>
-            <a href="#" className={`flex items-center gap-2 ${darkMode ? 'text-red-600' : 'text-red-600'}`}>{icon}
-              <span className={`text-sm tracking-wider ${darkMode ? 'text-black' : 'text-white'}`}>{name}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
 
-      <ul>
-        <li className='py-4'>
-          <div className='flex items-center gap-2'>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} className="sr-only" />
-              <div className={`w-11 h-6 bg-gray-200 rounded-full ${darkMode ? 'dark:bg-gray-700' : ''} relative`}>
-                <span className={`absolute top-0 left-0 h-6 w-6 rounded-full transition-transform ${darkMode ? 'bg-black translate-x-full' : 'bg-white'}`}></span>
-              </div>
-              <span className={`mr-2 px-3 ${darkMode ? 'text-black' : 'text-white'}`}>{darkMode ? 'Dark' : 'Light'}</span>
-            </label>
-          </div>
-        </li>
-      </ul>
-    </div>
-  );
-};
+                <div className="flex items-center space-x-4 md:space-x-12">
+                    <p className={`text-sm font-bold ${darkMode ? 'text-black' : 'text-red-600'}`}>
+                        {currentUser.displayName || 'User'}
+                    </p>
 
-export default Navbar;
+
+
+                    <MdLogin
+                        color={darkMode ? 'black' : 'red'}
+                        className="cursor-pointer"
+                        size={30}
+                        onClick={onOpen}
+                        aria-label="Logout"
+                    />
+                </div>
+            </div>
+
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent
+                        bg={darkMode ? 'black' : 'white'}
+                        color={darkMode ? 'white' : 'gray.800'}
+                        borderRadius="lg"
+                        boxShadow="xl"
+                        padding={6}
+                        maxWidth="sm"
+                    >
+                        <AlertDialogHeader
+                            fontSize="lg"
+                            fontWeight="bold"
+                            borderBottomWidth="1px"
+                            paddingBottom={3}
+                        >
+                            Logout Confirmation
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody
+                            fontSize="md"
+                            mb={4}
+                        >
+                            Are you sure you want to logout? You will be redirected to the login page.
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter
+                            display="flex"
+                            justifyContent="flex-end"
+                            gap={4}
+                        >
+                            <Button
+                                ref={cancelRef}
+                                onClick={onClose}
+                                variant="outline"
+                                borderColor={darkMode ? 'gray.600' : 'gray.300'}
+                                color={darkMode ? 'white' : 'gray.800'}
+                                _hover={{ borderColor: darkMode ? 'gray.500' : 'gray.400' }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                colorScheme="red"
+                                onClick={handleLogout}
+                                _hover={{ bg: 'red.600' }}
+                                _active={{ bg: 'red.700' }}
+                            >
+                                Logout
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+        </div>
+    )
+}
+
+export default Navbar
