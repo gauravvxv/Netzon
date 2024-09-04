@@ -44,7 +44,7 @@ const Login = () => {
   };
 
   if (userLoggedIn) {
-    return <Navigate to="/" replace={true} />;
+    return <Navigate to="/movies" replace={true} />;
   }
   
   return (

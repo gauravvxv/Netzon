@@ -31,7 +31,7 @@ const Navbar = ({ toggleSidebar }) => {
     const handleLogout = async () => {
         try {
             await doSignOut();
-            navigate("/login")
+            navigate("/")
             console.log("logout");
 
         } catch (error) {

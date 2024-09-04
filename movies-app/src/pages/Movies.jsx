@@ -98,7 +98,7 @@ const Movies = () => {
         <p className="text-4xl font-semibold text-gray-700 mb-4">
           Please log in to view this page
         </p>
-        <Link to={"/login"}>
+        <Link to={"/"}>
           <HiOutlineLogin size={50} className="text-red-600" />
         </Link>
       </div>

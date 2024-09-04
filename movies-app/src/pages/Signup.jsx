@@ -53,12 +53,16 @@ const Signup = () => {
   }
 
   return (
-    <div className="relative h-screen w-screen flex items-center justify-center">
+<div className="relative min-h-screen w-screen">
       {/* Background Image */}
-      <img src={netFlix} alt="Netflix Background" className="h-full w-full object-cover absolute inset-0 -z-10" />
+      <img
+        src={netFlix}
+        alt="Netflix Background"
+        className="absolute inset-0 object-cover w-full h-full -z-10"
+      />
 
       {/* Signup Form */}
-      <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
         <div className="bg-white bg-opacity-90 p-6 sm:p-8 rounded-lg shadow-lg max-w-md w-full">
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-800">Signup</h2>
 
@@ -136,7 +140,7 @@ const Signup = () => {
 
           <div className="text-center mt-4 text-gray-700">
             Already have an account?{' '}
-            <Link to="/login" className="text-red-600 hover:underline">
+            <Link to="/" className="text-red-600 hover:underline">
               Login
             </Link>
           </div>

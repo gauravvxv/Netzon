@@ -12,9 +12,9 @@ function App() {
     <AuthProvider>
     <ThemeProvider>
         <Routes>
-            <Route path="/" element={<Movies />} />
+            <Route path="/movies" element={<Movies />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
         </Routes>
     </ThemeProvider>
 </AuthProvider>
