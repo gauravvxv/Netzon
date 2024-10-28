@@ -12,9 +12,17 @@ Neton is a movie discovery website where users can search for movies, view their
 Frontend: HTML, CSS, JavaScript, React.js
 Backend: Firebase Authentication, The Movie Database (TMDb) API
 
+# Signup Page
+<img width="857" alt="Screenshot 2024-10-28 214210" src="https://github.com/user-attachments/assets/2e51888a-f410-435a-8073-1872cadc7fc2">
+
+# Login Page
+<img width="870" alt="Screenshot 2024-10-28 214458" src="https://github.com/user-attachments/assets/1bab7971-208c-47a8-8eff-f49fb0e3b61d">
+
+# Home page
+<img width="946" alt="Screenshot 2024-10-28 214714" src="https://github.com/user-attachments/assets/5b8279ba-97d7-42ee-ad13-d3825af47a2b">
 
 
-## Usage
+
 Search: Use the search bar to find movies by title.
 Login/Signup: Sign up with email/password or use Google OAuth to log in.
 View Movie Details: Click on any movie to view details like release date, poster, and description.
